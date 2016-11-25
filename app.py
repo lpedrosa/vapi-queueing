@@ -1,5 +1,10 @@
 from bottle import get, post, request, run
 
+import os
+
+
+PORT = os.getenv('PORT', 5000)
+
 
 @get('/queue')
 def queue_call():
@@ -14,4 +19,4 @@ def ncco_events():
     print("Received event: {}".format(event))
 
 
-run(host='0.0.0.0', port=5000, server='gunicorn', workers='2')
+run(host='0.0.0.0', port=PORT, server='gunicorn', workers='2')
