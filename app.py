@@ -1,46 +1,14 @@
 from bottle import get, post, request, response, run
 from Queue import Queue, Empty as QueueEmpty
-from threading import Timer
+
+from util import RepeatingTimer
 
 import os
-import sys
 
 # provided by the environment
 PORT = os.getenv('PORT', 5000)
 
 call_queue = Queue()
-
-
-class RepeatingTimer(object):
-    """Based on RepeatedTimer in http://stackoverflow.com/a/38317060"""
-
-    def __init__(self, interval, function, *args, **kwargs):
-        self._timer = None
-        self.interval = interval
-        self.function = function
-        self.args = args
-        self.kwargs = kwargs
-        self.is_running = False
-
-    def _run(self):
-        self.is_running = False
-        try:
-            self.function(*self.args, **self.kwargs)
-        except:
-            # Prevents the repeated timer from stopping
-            print("RepeatedTimer failed:{}".format(sys.exec_info()[0]))
-        finally:
-            self.start()
-
-    def start(self):
-        if not self.is_running:
-            self._timer = Timer(self.interval, self._run)
-            self._timer.start()
-            self.is_running = True
-
-    def stop(self):
-        self._timer.cancel()
-        self.is_running = False
 
 
 def unqueue_call(queue):
@@ -111,7 +79,6 @@ try:
     agent_scheduler = RepeatingTimer(5.0, unqueue_call, call_queue)
     print('Starting the agent scheduler')
     agent_scheduler.start()
-
     run(host='0.0.0.0', port=PORT)
 finally:
     print('Stopping the agent scheduler')
