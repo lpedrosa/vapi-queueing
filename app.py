@@ -1,9 +1,10 @@
-from bottle import get, post, request, response, run
+import os
 from Queue import Queue, Empty as QueueEmpty
+
+from bottle import get, post, request, response, run
 
 from util import RepeatingTimer
 
-import os
 
 # provided by the environment
 PORT = os.getenv('PORT', 5000)
