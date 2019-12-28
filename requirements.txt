@@ -1,5 +1,5 @@
 bottle==0.12.10
-ecdsa==0.13
+ecdsa==0.13.3
 future==0.16.0
 gunicorn==19.6.0
 pycrypto==2.6.1
